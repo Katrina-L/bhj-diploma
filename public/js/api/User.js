@@ -11,13 +11,6 @@ class User {
    * */
   static setCurrent(user) {
     localStorage.setItem("user", JSON.stringify(user));
-    // let userValue = '"{';
-
-    // for ( let pos in user ) {
-    //   userValue += `"${pos}":"${user[pos]}",`;
-    // }
-
-    // localStorage.user = `${userValue.slice(0,-1)}}"`;
   }
 
   /**
@@ -25,7 +18,7 @@ class User {
    * пользователе из локального хранилища.
    * */
   static unsetCurrent() {
-    delete localStorage.user; 
+    localStorage.removeItem("user"); 
   }
 
   /**
@@ -87,7 +80,6 @@ class User {
     createRequest({
       url: this.URL + '/register',
       method: "POST",
-      // responseType: "json",    // ???
       data,
       callback: (err, response) => {
         if (response && response.user) {

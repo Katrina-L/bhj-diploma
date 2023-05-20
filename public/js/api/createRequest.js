@@ -15,21 +15,21 @@ const createRequest = (options = {}) => {
         callback(xhr.response);
     });
 
-    try {
-        if ( method === "GET") {
-            url += "?"
-            for ( let pos in data ) {
-                url += `${pos}=${data[pos]}&`;
-            }
-            xhr.open(method, url.slice(0, -1));
-        } else {
-            formData = new FormData();
-            for ( let pos in data ) {
-                formData.append(`${pos}`, `${data[pos]}`);
-            }
-            xhr.open(method, url);
+    if ( method === "GET") {
+        url += "?";
+        for ( let pos in data ) {
+            url += `${pos}=${data[pos]}&`;
         }
-
+        xhr.open(method, url.slice(0, -1));
+    } else {
+        formData = new FormData();
+        for ( let pos in data ) {
+            formData.append(`${pos}`, `${data[pos]}`);
+        }
+        xhr.open(method, url);
+    }
+    
+    try {
         xhr.send(formData);
     }
     catch (e) {
