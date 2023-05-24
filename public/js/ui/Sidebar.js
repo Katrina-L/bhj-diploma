@@ -35,17 +35,17 @@ class Sidebar {
   static initAuthLinks() {
     document.querySelector(".menu-item_register").addEventListener("click", e => {
       e.preventDefault();
-      App.getModal("register").open;
+      App.getModal("register").open();
     })
 
     document.querySelector(".menu-item_login").addEventListener("click", e => {
       e.preventDefault();
-      App.getModal("login").open;
+      App.getModal("login").open();
     })
     
     document.querySelector(".menu-item_logout").addEventListener("click", e => {
       e.preventDefault();
-      User.logout((err, response) => {                //    ???
+      User.logout((err, response) => {
         if ( response && response.success ) {
           App.setState("init");
         }

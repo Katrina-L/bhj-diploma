@@ -28,12 +28,7 @@ class AsyncForm {
   registerEvents() {
     this.element.addEventListener("submit", e => {
       e.preventDefault();
-      
-      const xhr = new XMLHttpRequest();       
-      xhr.onload = () => {                  /// ???
-        xhr.open("POST", "/form/");
-        xhr.send(this.submit());
-      };
+      this.submit();
     })
   }
 
@@ -46,13 +41,7 @@ class AsyncForm {
    * */
   getData() {
     const asyncForm = new FormData(this.element);
-    let renewForm = {};
-
-    for ( let item of asyncForm.entries() ) {
-      renewForm[item[0]] = item[1];
-    }
-    
-    return renewForm;
+    return Object.fromEntries(asyncForm.entries());
   }
 
   onSubmit(options){
@@ -64,6 +53,6 @@ class AsyncForm {
    * данные, полученные из метода getData()
    * */
   submit() {
-    this.onSubmit(this.getData());  //  ???
+    this.onSubmit(this.getData());
   }
 }
