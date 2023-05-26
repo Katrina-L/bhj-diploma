@@ -87,7 +87,7 @@ class TransactionsPage {
    * Получает список Transaction.list и полученные данные передаёт
    * в TransactionsPage.renderTransactions()
    * */
-  render(options) {    //  ???
+  render(options) {
     if ( options ) {
       this.lastOptions = options;
 
@@ -112,7 +112,7 @@ class TransactionsPage {
   clear() {
     this.renderTransactions([]);
     this.renderTitle("Название счёта");
-    this.lastOptions = null;  //  ???
+    this.lastOptions = null;
   }
 
   /**
@@ -137,12 +137,6 @@ class TransactionsPage {
     })
 
     return resultDate;
-
-    // let day = date.split(" ")[0].split("-");
-    // let time = date.split(" ")[1].split(":");
-    // let months = ["января", "февраля", "марта", "апреля", 'мая', "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
-    // let resultDate = `${day[2]} ${months[day[1] - 1]} ${day[0]} г. в ${time[0]}:${time[1]}`;
-    // return resultDate;
   }
 
   /**
