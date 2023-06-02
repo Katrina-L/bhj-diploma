@@ -33,9 +33,17 @@ class TransactionsPage {
    * TransactionsPage.removeAccount соответственно
    * */
   registerEvents() {
-    document.querySelector(".remove-account").addEventListener( "click", () => this.removeAccount() );
+    this.element.addEventListener("click", e => {
+      e.preventDefault();
+      
+      if ( e.target.closest(".transaction__remove") ) {
+        this.removeTransaction(`${e.target.closest(".transaction__remove").dataset.id}`);
+      }
 
-    this.element.querySelectorAll(".transaction__remove").forEach( elem => elem.addEventListener("click", () => this.removeTransaction(`${this.element.dataset.id}`)) );
+      if ( e.target.closest(".remove-account") ) {
+        this.removeAccount();
+      }
+    })
   }
 
   /**
@@ -51,7 +59,7 @@ class TransactionsPage {
     if (this.lastOptions) {
 
       if (confirm("Вы согласны удалить счёт?")) {
-        Account.remove(options.account_id, (err, response) => {
+        Account.remove(this.lastOptions.account_id, (err, response) => {
           if ( response && response.success ) {
             App.updateWidgets();
             App.updateForms();
@@ -96,7 +104,7 @@ class TransactionsPage {
           this.renderTitle(response.data.name);
         }
       })
-      Thansaction.list(options, (err, response) => {
+      Transaction.list(options, (err, response) => {
         if ( response && response.success ) {
           this.renderTransactions(response.data);
         }
@@ -144,28 +152,28 @@ class TransactionsPage {
    * item - объект с информацией о транзакции
    * */
   getTransactionHTML(item){
-    `<div class="transaction transaction_${item.type} row">
-      <div class="col-md-7 transaction__details">
-        <div class="transaction__icon">
-          <span class="fa fa-money fa-2x"></span>
-        </div>
-        <div class="transaction__info">
-          <h4 class="transaction__title">${item.name}</h4>
-          <div class="transaction__date">${this.formatDate(item.created_at)}</div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="transaction__summ">
-          ${item.sum} <span class="currency">₽</span>
-        </div>
-      </div>
-      <div class="col-md-2 transaction__controls">
-        <!-- в data-id нужно поместить id -->
-        <button class="btn btn-danger transaction__remove" data-id=${item.id}>
-          <i class="fa fa-trash"></i>  
-        </button>
-      </div>
-    </div>`
+    return `<div class="transaction transaction_${item.type} row">
+            <div class="col-md-7 transaction__details">
+              <div class="transaction__icon">
+                <span class="fa fa-money fa-2x"></span>
+              </div>
+              <div class="transaction__info">
+                <h4 class="transaction__title">${item.name}</h4>
+                <div class="transaction__date">${this.formatDate(item.created_at)}</div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="transaction__summ">
+                ${item.sum} <span class="currency">₽</span>
+              </div>
+            </div>
+            <div class="col-md-2 transaction__controls">
+              <!-- в data-id нужно поместить id -->
+              <button class="btn btn-danger transaction__remove" data-id=${item.id}>
+                <i class="fa fa-trash"></i>  
+              </button>
+            </div>
+          </div>`
   };
 
   /**
@@ -173,6 +181,6 @@ class TransactionsPage {
    * используя getTransactionHTML
    * */
   renderTransactions(data){
-    data.forEach( pos => document.querySelector(".content").insertAdjacentHTML("beforeend", this.getTransactionHTML(pos)) );
+    document.querySelector(".content").innerHTML = data.reduce( (acc, item) => acc + this.getTransactionHTML(item) + "\n", "" );
   }
 }

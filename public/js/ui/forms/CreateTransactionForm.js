@@ -35,8 +35,9 @@ class CreateTransactionForm extends AsyncForm {
   onSubmit(data) {
     Transaction.create(data, (err, response) => {
       if (response && response.success) {
+        App.update();
         this.element.reset();
-        App.getModal(`${this.element.dataset.modalId}`)
+        App.getModal(`${this.element.closest(".modal").dataset.modalId}`).close();
       }
     })
   }
